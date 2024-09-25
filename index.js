@@ -3,61 +3,72 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
+      type: "vegetable",
       price: 0.35
     },
     {
       id: "002-carrot",
       name: "carrot",
+      type: "vegetable",
       price: 0.35
     },
     {
       id: "003-apple",
       name: "apple",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "004-apricot",
       name: "apricot",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "005-avocado",
       name: "avocado",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "006-bananas",
       name: "bananas",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "008-berry",
       name: "berry",
+      type: "berry",
       price: 0.35
     },
     {
       id: "009-blueberry",
       name: "blueberry",
+      type: "berry",
       price: 0.35
     },
     {
       id: "010-eggplant",
       name: "eggplant",
+      type: "berry",
       price: 0.35
     }
   ],
   cart: []
 };
 
-function displaySelection() {
+function displaySelection(filteredItems = state.items) {
   console.log('function hit!');
   const itemList = document.getElementById('item-list-store--item-list');
-  state.items.forEach(element => {
+  itemList.innerHTML = '';
+  filteredItems.forEach(element => {
     const li = document.createElement('li');
     const img = document.createElement('img');
 
@@ -77,22 +88,33 @@ function displaySelection() {
   });
 }
 
+
+function filterType(type) {
+  if (type === 'all') {
+    displaySelection(state.items);
+  } else {
+    const filteredItems = state.items.filter(item => item.type === type);
+    displaySelection(filteredItems);
+  }
+}
+
 function addToCart(item) {
-  const cartList = document.getElementById('item-list-cart--item-list'); // Corrected id selector
+  const cartList = document.getElementById('item-list-cart--item-list');
   console.log(`${item.name} added to cart!`);
 
   let cartItem = document.getElementById(`cart-${item.id}`);
   console.log(cartItem)
   if (cartItem) {
-    // Increase the quantity
     let quantity = cartItem.querySelector('.quantity');
     quantity.textContent = parseInt(quantity.textContent) + 1;
   } else {
 
   const li = document.createElement('li');
-  li.id = `cart-${item.id}`; // Assign a unique id to the cart item
+  li.id = `cart-${item.id}`;
+
+
   const img = document.createElement('img');
-  img.src = `assets\\icons\\${item.id}.svg`; // Corrected path
+  img.src = `assets\\icons\\${item.id}.svg`; 
   img.alt = item.name;
 
   const quantity = document.createElement('span');
@@ -121,6 +143,5 @@ function addToCart(item) {
   cartList.appendChild(li);
   }
 }
-
 
 displaySelection();
